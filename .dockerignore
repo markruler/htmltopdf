@@ -1,0 +1,12 @@
+venv/
+loadtest/
+*.pdf
+*.html
+*.log
+
+.idea/
+__pycache__/
+
+demo/
+
+legacy/

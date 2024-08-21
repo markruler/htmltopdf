@@ -1,0 +1,9 @@
+*.pdf
+*.html
+venv/
+*.log
+
+.idea/
+__pycache__/
+
+demo/
