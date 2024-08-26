@@ -43,6 +43,7 @@ if __name__ == '__main__':
     app.run(
         host="0.0.0.0",  # 명시하지 않으면 `localhost`만 인식함.
         port=5000,
+        # threaded=True,  # default: True
         use_reloader=False,
         debug=True,  # 개발 시 `True`로 설정
     )

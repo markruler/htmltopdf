@@ -78,7 +78,7 @@ async def test_core_file():
         }
     )
 
-    print(_pdf)
+    assert _pdf is not None
 
     await context.close()  # don't forget to close the context, or it will create a core.{number} file.
     await browser.close()

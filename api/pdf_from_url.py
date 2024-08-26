@@ -1,4 +1,3 @@
-import asyncio
 import threading
 
 from flask import current_app as app
@@ -18,11 +17,9 @@ def get_pdf_from_url():
     if _url is None:
         raise ValidationError("<url> is required.")
 
-    pdf_binary_data = asyncio.run(
-        url_to_pdf(
-            url=_url,
-            orientation=req_param.get('orientation', 'portrait')
-        )
+    pdf_binary_data = url_to_pdf(
+        url=_url,
+        orientation=req_param.get('orientation', 'portrait')
     )
     app.logger.debug(f"threading.active_count(): {threading.active_count()}")
 

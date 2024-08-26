@@ -1,4 +1,4 @@
-version = 0.5.1
+version = 0.5.2
 image_name = htmltopdf
 container_name = htmltopdf
 
@@ -11,7 +11,7 @@ clean: docker-rmi
 	@# rm -f *.html
 
 # app 실행
-.PHONE: run
+.PHONY: run
 run:
 	python3 app.py
 

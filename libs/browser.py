@@ -1,5 +1,6 @@
 from flask import current_app as app
-from playwright.async_api import async_playwright, PlaywrightContextManager, Playwright, Browser, Page, BrowserContext
+# from playwright.async_api import async_playwright, PlaywrightContextManager, Playwright, Browser, Page, BrowserContext
+from playwright.sync_api import sync_playwright, PlaywrightContextManager, Playwright, Browser, Page, BrowserContext
 
 
 class BrowserInstance:
@@ -13,23 +14,23 @@ class BrowserInstance:
             browser_type: str = 'chromium',
     ):
         self.browser_type = browser_type
-        self.playwright_context_manager: PlaywrightContextManager = async_playwright()
+        self.playwright_context_manager: PlaywrightContextManager = sync_playwright()
         self.playwright = None
         self.browser = None
         self.context = None
         self.page = None
         self._landscape: bool = orientation == 'landscape'
 
-    async def start(self):
+    def start(self):
         # NOTE: `playwright install chromium` # or firefox, webkit
         # Download to $HOME/.cache/ms-playwright/
         app.logger.debug('headless Chromium 브라우저 시작')
 
         # https://playwright.dev/python/docs/api/class-playwright
-        self.playwright: Playwright = await self.playwright_context_manager.start()
+        self.playwright: Playwright = self.playwright_context_manager.start()
 
         # https://playwright.dev/python/docs/api/class-browsertype#browser-type-launch
-        self.browser: Browser = await self.playwright.chromium.launch(
+        self.browser: Browser = self.playwright.chromium.launch(
             headless=True,
             timeout=10_000,  # (ms)
             args=[
@@ -48,19 +49,19 @@ class BrowserInstance:
 
         # https://playwright.dev/python/docs/api/class-browser#browser-new-context
         app.logger.debug('새 컨텍스트 열기')
-        self.context: BrowserContext = await self.browser.new_context()
+        self.context: BrowserContext = self.browser.new_context()
 
         return self
 
-    async def new_page(self):
+    def new_page(self):
         app.logger.debug('새 페이지 열기')
-        self.page: Page = await self.context.new_page()
+        self.page: Page = self.context.new_page()
         return self.page
 
-    async def pdf(self):
+    def pdf(self):
         # https://playwright.dev/python/docs/api/class-page#page-pdf
         app.logger.debug('PDF로 변환 및 저장')
-        return await self.page.pdf(
+        return self.page.pdf(
             format='A4',
             landscape=self._landscape,
             print_background=True,
@@ -73,16 +74,16 @@ class BrowserInstance:
             }
         )
 
-    async def stop(self):
+    def stop(self):
         app.logger.debug('브라우저 종료')
         # https://playwright.dev/docs/api/class-browsercontext#browser-context-close
         # if self.context is not None:
-        await self.context.close()
+        self.context.close()
 
         # https://playwright.dev/python/docs/api/class-browser#browser-close
         # if self.browser is not None:
-        await self.browser.close()
+        self.browser.close()
 
         # https://playwright.dev/python/docs/api/class-playwright#playwright-stop
         # if self.playwright is not None:
-        await self.playwright.stop()
+        self.playwright.stop()
