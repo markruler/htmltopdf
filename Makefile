@@ -1,4 +1,4 @@
-version = 0.6.0
+version = 0.8.0
 image_name = htmltopdf
 container_name = htmltopdf
 
@@ -13,7 +13,7 @@ clean: docker-rmi
 # app 실행
 .PHONY: run
 run:
-	python3 app.py
+	uvicorn htmltopdf:app --host=0.0.0.0 --port=38000 --reload
 
 # Dockerfile 이미지 빌드
 .PHONY: docker-build
@@ -25,7 +25,7 @@ docker-build:
 # 빌드된 Docker 이미지로 컨테이너 생성
 .PHONY: docker-run
 docker-run:
-	sudo docker run -d --name ${container_name} -p 5000:5000 -v ${PWD}/logs:/app/logs:rw ${image_name}:${version}
+	sudo docker run -d --name ${container_name} -p 5000:38000 -v ${PWD}/logs:/app/logs:rw ${image_name}:${version}
 
 # Docker 컨테이너 중지 및 삭제
 .PHONY: docker-stop
@@ -54,3 +54,7 @@ check-docker-layers:
 .PHONY: check-core
 check-core:
 	sudo docker exec -it ${container_name} ls -hal
+
+.PHONY: check-memory
+check-memory:
+	./check_memory.sh

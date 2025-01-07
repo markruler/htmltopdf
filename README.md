@@ -11,7 +11,7 @@
 ```shell
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install --no-cache-dir --upgrade -r requirements.txt
 playwright install --with-deps # chromium, firefox, webkit, etc.
 ```
 
@@ -22,7 +22,7 @@ make run
 ## 백그라운드 실행
 
 ```shell
-nohup venv/bin/python3 app.py > /dev/null 2>&1 &
+nohup .venv/bin/uvicorn htmltopdf:app --host=0.0.0.0 --port=38000 > /dev/null 2>&1 &
 ```
 
 ## Docker Image 빌드
