@@ -11,7 +11,7 @@ class Load(HttpUser):
         --headless \
         -u 10 -r 2 -t 1m \
         --csv=results \
-        --host=http://htmltopdf:5000
+        --host=http://localhost:5000
     """
 
     # 각 사용자가 작업을 완료한 후 1~3초 사이의 랜덤한 시간 동안 대기합니다.
