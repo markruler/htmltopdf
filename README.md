@@ -33,8 +33,6 @@ make docker-build
 
 ## Docker Container 실행
 
-> Docker에서 사용 시 좀비 프로세스(`headless-shell <defunct>`)가 쌓이는 문제가 있음.
-
 ```shell
 make docker-run
 ```

@@ -22,6 +22,7 @@ docker-build:
 	@#sudo docker system prune --all
 	@#sudo docker builder prune --all
 
+# https://playwright.dev/docs/ci#docker
 # 빌드된 Docker 이미지로 컨테이너 생성
 .PHONY: docker-run
 docker-run:
