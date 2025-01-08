@@ -1,12 +1,24 @@
 # HTML to PDF
 
-## 사용 모듈
+API server to generate PDF from HTML.
 
-- ~~[wkhtmltopdf](https://github.com/wkhtmltopdf/wkhtmltopdf)~~
-- ~~[puppeteer](https://github.com/puppeteer/puppeteer)~~
-- [microsoft/playwright](https://github.com/microsoft/playwright-python)
+## Prerequisites
 
-## Local 실행
+- Python 3.9+
+
+## Usage
+
+### Running with Docker
+
+```shell
+make docker-build
+```
+
+```shell
+make docker-run
+```
+
+### Running locally
 
 ```shell
 python -m venv .venv
@@ -19,24 +31,15 @@ playwright install --with-deps # chromium, firefox, webkit, etc.
 make run
 ```
 
-## 백그라운드 실행
+Running as a background process:
 
 ```shell
 nohup .venv/bin/uvicorn htmltopdf:app --host=0.0.0.0 --port=38000 > /dev/null 2>&1 &
 ```
 
-## Docker Image 빌드
+## References
 
-```shell
-make docker-build
-```
-
-## Docker Container 실행
-
-```shell
-make docker-run
-```
-
-## 참조
-
+- To avoid zombie processes
+  - [Suggested configuration](https://playwright.dev/docs/ci#docker) - Playwright
+  - [Docker](https://playwright.dev/docs/docker) - Playwright
 - [Playwright를 사용해서 HTML 페이지를 PDF로 만들기](https://markruler.github.io/posts/pdf/html-to-pdf/)
