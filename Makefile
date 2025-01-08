@@ -1,4 +1,4 @@
-version = 0.8.0
+version = 0.8.1
 image_name = htmltopdf
 container_name = htmltopdf
 
@@ -25,7 +25,7 @@ docker-build:
 # 빌드된 Docker 이미지로 컨테이너 생성
 .PHONY: docker-run
 docker-run:
-	sudo docker run -d --name ${container_name} -p 5000:38000 -v ${PWD}/logs:/app/logs:rw ${image_name}:${version}
+	sudo docker run --ipc=host --init -d --name ${container_name} -p 5000:38000 -v ${PWD}/logs:/app/logs:rw ${image_name}:${version}
 
 # Docker 컨테이너 중지 및 삭제
 .PHONY: docker-stop
