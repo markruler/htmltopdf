@@ -10,8 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from api.pdf_from_content import get_pdf_from_content
-from api.pdf_from_url import get_pdf_from_url
+from libs.pdf import url_to_pdf, content_to_pdf
 from libs.perf import log_execution_time
 
 # uvicorn htmltopdf:app --reload
@@ -59,6 +58,7 @@ async def custom_http_exception_handler(request, exc):
     logging.error(exc)
     return await http_exception_handler(request, exc)
 
+
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request, exc):
     logging.error(exc)
@@ -71,12 +71,12 @@ async def healthcheck():
 
 
 @app.get("/pdf/url")
-async def url_to_pdf(
+async def get_pdf_from_url(
         url: str,
         orientation: Optional[str] = "portrait",
         filename: Optional[str] = "out",
 ):
-    pdf = await get_pdf_from_url(url, orientation)
+    pdf = await url_to_pdf(url, orientation)
     return StreamingResponse(
         content=BytesIO(pdf),
         media_type="application/pdf",
@@ -87,13 +87,13 @@ async def url_to_pdf(
 
 
 @app.post("/pdf/content")
-async def content_to_pdf(
+async def get_pdf_from_content(
         html: Annotated[str, Form()],
         css: Annotated[str, Form()] = None,
         orientation: Annotated[str, Form()] = "portrait",
         filename: Annotated[str, Form()] = "out",
 ):
-    pdf = await get_pdf_from_content(html, css, orientation)
+    pdf = await content_to_pdf(html, css, orientation)
     return StreamingResponse(
         content=BytesIO(pdf),
         media_type="application/pdf",

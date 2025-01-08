@@ -1,4 +1,4 @@
-version = 0.8.1
+version = 0.9.0
 image_name = htmltopdf
 container_name = htmltopdf
 
@@ -6,9 +6,11 @@ container_name = htmltopdf
 all: clean
 
 .PHONY: clean
-clean: docker-rmi
-	@rm -f *.pdf
+clean:
+	rm -f *.pdf
 	@# rm -f *.html
+	@#sudo docker system prune --all
+	@#sudo docker builder prune --all
 
 # app 실행
 .PHONY: run
@@ -19,14 +21,12 @@ run:
 .PHONY: docker-build
 docker-build:
 	sudo docker build . -t ${image_name} -t ${image_name}:${version} --no-cache
-	@#sudo docker system prune --all
-	@#sudo docker builder prune --all
 
 # https://playwright.dev/docs/ci#docker
 # 빌드된 Docker 이미지로 컨테이너 생성
 .PHONY: docker-run
 docker-run:
-	sudo docker run --ipc=host --init -d --name ${container_name} -p 5000:38000 -v ${PWD}/logs:/app/logs:rw ${image_name}:${version}
+	sudo docker run --ipc=host --init -d --name ${container_name} -p 15000:38000 -v ${PWD}/logs:/app/logs:rw ${image_name}:${version}
 
 # Docker 컨테이너 중지 및 삭제
 .PHONY: docker-stop
@@ -58,4 +58,4 @@ check-core:
 
 .PHONY: check-memory
 check-memory:
-	./check_memory.sh
+	./scripts/check_memory.sh
